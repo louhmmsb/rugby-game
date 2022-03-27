@@ -1,5 +1,7 @@
 // Standard headers
 #include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
 
 // Internal headers
 #include "direction.h"
@@ -23,7 +25,20 @@ direction_t execute_attacker_strategy(
   UNUSED(defender_spy);
 
   // TODO: Implement Attacker logic here
-  return (direction_t) DIR_RIGHT;
+  static int first_roll = 0;
+
+  if (!first_roll) {
+    srand(time(NULL));
+    first_roll = 1;
+  }
+
+  int y_move = rand()%3 - 1; //Can go up, down, or not move on the y axis
+  int x_move = rand()%3 - 1;
+  x_move = (x_move == -1)? rand()%3 - 1 : x_move; // Giving a smaller chance of it going back
+  
+  printf("move == {%d, %d}\n", y_move, x_move);
+
+  return (direction_t) {y_move, x_move};
 }
 
 /*----------------------------------------------------------------------------*/
